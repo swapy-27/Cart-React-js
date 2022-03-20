@@ -1,45 +1,40 @@
-import React  from "react";
+import React from "react";
 
-const Navbar = (props)=>{
- 
-return (
-    <div style={styles.nav}>
+const Navbar = (props) => {
 
-        <div style={styles.cartIconContiner}>
-            <img style={styles.cartIcon} src={require('../assets/shopping-cart.png')} alt=""/>
-            <span style={styles.cartCount}>3</span>
+    return (
+        <div style={styles.nav}>
+
+            <div style={styles.cartIconContiner}>
+                <img style={styles.cartIcon} src={require('../assets/shopping-cart.png')} alt="" />
+                <span style={styles.cartCount}>{props.getCount()}</span>
+            </div>
+
         </div>
-
-    </div>
-)
-
-
-
+    )
 
 }
 
+const styles = {
+    nav: {
+        height: 70,
+        width: '100%',
+        backgroundColor: 'blue',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
 
-
-const styles ={
-    nav:{
-        height:70,
-        width:'100%',
-        backgroundColor:'blue',
-        display:'flex',
-        justifyContent:'flex-end',
-        alignItems:'center',
-        
         // width:100%,
     },
-    cartIconContiner:{
-        position:'relative',
+    cartIconContiner: {
+        position: 'relative',
     },
-    cartIcon:{
-        height:40,
-        width:50,
-        marginRight:30
+    cartIcon: {
+        height: 40,
+        width: 50,
+        marginRight: 30
     },
-    cartCount:{
+    cartCount: {
         background: 'yellow',
         borderRadius: '50%',
         padding: '4px 8px',
@@ -47,6 +42,6 @@ const styles ={
         right: 0,
         top: -9
     }
-   
+
 }
 export default Navbar;
