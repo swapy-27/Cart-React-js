@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-class CartItem extends React.Component {
+const CartItem =(props)=> {
 
 
 
@@ -34,9 +33,10 @@ class CartItem extends React.Component {
     //     )
     // }
 
-    render() {
-        console.log(this.props)
-        const { price, title, qty } = this.props.product;
+ 
+
+        const { price, title, qty  } = props.product;
+        const {product,increaseQuantity ,decreaseQuantity , deleteProduct}= props;
         return (
             <div className='cart-item'>
                 <div className='left-block'>
@@ -49,15 +49,15 @@ class CartItem extends React.Component {
                     <div className='cart-items-actions'>
                         {/* {Buttons} */}
                         {/* passing reference creates a new instance of it which does not have any acess to its class attributes that's why we use this.increaseQuantity.bind(this) or use arrow functions */}
-                        <img className='action-icons' src={require('../assets/3114793.png')} alt='plus' onClick={()=>{this.props.increaseQuantity(this.props.product)}} />
-                        <img className='action-icons' src={require('../assets/minus.png')} alt='minus' onClick={()=>{this.props.decreaseQuantity(this.props.product)}} />
-                        <img className='action-icons' src={require('../assets/bin.png')} alt='delete' />
+                        <img className='action-icons' src={require('../assets/3114793.png')} alt='plus' onClick={()=>{increaseQuantity(product)}} />
+                        <img className='action-icons' src={require('../assets/minus.png')} alt='minus' onClick={()=>{decreaseQuantity(product)}} />
+                        <img className='action-icons' src={require('../assets/bin.png')} alt='delete' onClick={()=>{deleteProduct(product)}} />
                     </div>
                 </div>
             </div>
         );
     }
-}
+
 
 const styles = {
     image: {
