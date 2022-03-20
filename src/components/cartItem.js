@@ -49,8 +49,8 @@ class CartItem extends React.Component {
                     <div className='cart-items-actions'>
                         {/* {Buttons} */}
                         {/* passing reference creates a new instance of it which does not have any acess to its class attributes that's why we use this.increaseQuantity.bind(this) or use arrow functions */}
-                        <img className='action-icons' src={require('../assets/3114793.png')} alt='plus' onClick={this.increaseQuantity} />
-                        <img className='action-icons' src={require('../assets/minus.png')} alt='minus' onClick={this.decreaseQuantity} />
+                        <img className='action-icons' src={require('../assets/3114793.png')} alt='plus' onClick={()=>{this.props.increaseQuantity(this.props.product)}} />
+                        <img className='action-icons' src={require('../assets/minus.png')} alt='minus' onClick={()=>{this.props.decreaseQuantity(this.props.product)}} />
                         <img className='action-icons' src={require('../assets/bin.png')} alt='delete' />
                     </div>
                 </div>
