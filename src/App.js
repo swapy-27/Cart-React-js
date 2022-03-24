@@ -20,29 +20,61 @@ class App extends React.Component {
 
     let index = products.indexOf(product);
 
-    products[index].qty += 1;
+    // products[index].qty += 1;
 
-    this.setState({
-      products: products
-    })
+    // this.setState({
+    //   products: products
+    // })
+
+    const docRef = db.collection('product').doc(products[index].id);
+    docRef.update({
+      qty: products[index].qty + 1
+    }).then(
+      () => {
+        console.log('increased count  successfully')
+      }
+    ).catch(
+      () => {
+        console.log('error in updating')
+      }
+    )
 
   }
   handleDecreaseQuantity = (product) => {
     const products = this.state.products;
 
     let index = products.indexOf(product);
+
+    // if (products[index].qty > 0) {
+    //   products[index].qty -= 1;
+    // }
+    // else {
+    //   return;
+    // }
+
+    //   this.setState({
+    //     products: products
+    //   })
+    // }
     if (products[index].qty > 0) {
-      products[index].qty -= 1;
+      const docRef = db.collection('product').doc(products[index].id);
+      docRef.update({
+        qty: products[index].qty - 1
+      }).then(
+        () => {
+          console.log('increased count  successfully')
+        }
+      ).catch(
+        () => {
+          console.log('error in updating')
+        }
+      )
     }
     else {
       return;
     }
 
-    this.setState({
-      products: products
-    })
   }
-
   handleDeleteProduct = (product) => {
 
     const products = this.state.products;
@@ -97,33 +129,33 @@ class App extends React.Component {
         })
 
   }
-  addProduct=()=>{
+  addProduct = () => {
     db
-    .collection('product')
-    .add({
-      img:'',
-      qty:10,
-      price:1000,
-      title:'mustang'
-    })
-    .then((docRef)=>{
-      console.log('product has been added',docRef);
+      .collection('product')
+      .add({
+        img: '',
+        qty: 10,
+        price: 1000,
+        title: 'mustang'
+      })
+      .then((docRef) => {
+        console.log('product has been added', docRef);
 
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   render() {
     const { products, loading } = this.state;
     return (
 
       <div className="App">
-       
+
         <Navbar getCount={this.handleGetCount} />
-        
-          <button style={styles.button} onClick={this.addProduct}>Add product</button>
-       
+
+        <button style={styles.button} onClick={this.addProduct}>Add product</button>
+
         <Cart products={products} increaseQuantity={this.handleIncreaseQuantity} decreaseQuantity={this.handleDecreaseQuantity} deleteProduct={this.handleDeleteProduct} />
         {loading && <h1>Loading...</h1>}
         <div style={{ fontSize: 20, padding: 10 }}>Total-Amount={this.handleGetTotal()}</div>
@@ -134,10 +166,10 @@ class App extends React.Component {
   }
 }
 
-const styles={
-  button:{
-    margin:10,
-    color:'green'
+const styles = {
+  button: {
+    margin: 10,
+    color: 'green'
   }
 }
 
