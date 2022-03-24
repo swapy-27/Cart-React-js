@@ -71,10 +71,11 @@ handleGetTotal=()=>{
 }
 
 componentDidMount=()=>{
+
+  //adding listener so that anything changes in firebase it updated automatically
   db
   .collection('product')
-  .get()
-  .then(
+  .onSnapshot(
     (snapshot)=>{
      
       
