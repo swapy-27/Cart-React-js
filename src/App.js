@@ -2,19 +2,19 @@
 import React from 'react';
 import './App.css';
 import Cart from './components/Cart';
-import Navbar  from './components/Navbar';
+import Navbar from './components/Navbar';
 import db from './firebase';
-class App extends React.Component{
+class App extends React.Component {
   constructor() {
     super();
 
-    this.state ={
-      products:  [],
-      loading:true
+    this.state = {
+      products: [],
+      loading: true
 
+    }
   }
-}
-handleIncreaseQuantity = (product) => {
+  handleIncreaseQuantity = (product) => {
 
     const products = this.state.products;
 
@@ -23,96 +23,123 @@ handleIncreaseQuantity = (product) => {
     products[index].qty += 1;
 
     this.setState({
-        products: products
+      products: products
     })
 
-}
-handleDecreaseQuantity = (product) => {
+  }
+  handleDecreaseQuantity = (product) => {
     const products = this.state.products;
 
     let index = products.indexOf(product);
     if (products[index].qty > 0) {
-        products[index].qty -= 1;
+      products[index].qty -= 1;
     }
     else {
-        return;
+      return;
     }
 
     this.setState({
-        products: products
+      products: products
     })
-}
+  }
 
-handleDeleteProduct=(product)=>{
-    
+  handleDeleteProduct = (product) => {
+
     const products = this.state.products;
-    const items = products.filter((item)=>{return item.id!==product.id})
-   
+    const items = products.filter((item) => { return item.id !== product.id })
+
     this.setState({
-        products:this.products=items
+      products: this.products = items
     })
-}
-handleGetCount=()=>{
-  let count=0;
-  this.state.products.forEach((product)=>{
-    count+=product.qty
-  })  
-  return count;
-}
-handleGetTotal=()=>{
-  let total =0;
+  }
+  handleGetCount = () => {
+    let count = 0;
+    this.state.products.forEach((product) => {
+      count += product.qty
+    })
+    return count;
+  }
+  handleGetTotal = () => {
+    let total = 0;
 
-  this.state.products.forEach(
-    (product)=>{
-      total+=((product.qty*product.price))
-    }
-  )
-  return total;
-}
+    this.state.products.forEach(
+      (product) => {
+        total += ((product.qty * product.price))
+      }
+    )
+    return total;
+  }
 
-componentDidMount=()=>{
+  componentDidMount = () => {
 
-  //adding listener so that anything changes in firebase it updated automatically
-  db
-  .collection('product')
-  .onSnapshot(
-    (snapshot)=>{
-     
-      
-      const products = snapshot.docs.map(
-        (doc)=>{
-          let d = doc.data();
-          d['id']=doc.id
-          return d;
-        }
-      )
-      console.log(products)
-      
-      this.setState(
-        {
-          products:products,
-          loading:false
-        }
-      )
-  })
-       
-}
-  render(){
-    const {products,loading} = this.state;
+    //adding listener so that anything changes in firebase it updated automatically
+    db
+      .collection('product')
+      .onSnapshot(
+        (snapshot) => {
+
+
+          const products = snapshot.docs.map(
+            (doc) => {
+              let d = doc.data();
+              d['id'] = doc.id
+              return d;
+            }
+          )
+          console.log(products)
+
+          this.setState(
+            {
+              products: products,
+              loading: false
+            }
+          )
+        })
+
+  }
+  addProduct=()=>{
+    db
+    .collection('product')
+    .add({
+      img:'',
+      qty:10,
+      price:1000,
+      title:'mustang'
+    })
+    .then((docRef)=>{
+      console.log('product has been added',docRef);
+
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+  render() {
+    const { products, loading } = this.state;
     return (
 
       <div className="App">
-        <Navbar getCount = {this.handleGetCount} />
-        <Cart products ={products} increaseQuantity={this.handleIncreaseQuantity} decreaseQuantity={this.handleDecreaseQuantity} deleteProduct ={this.handleDeleteProduct} />
+       
+        <Navbar getCount={this.handleGetCount} />
+        
+          <button style={styles.button} onClick={this.addProduct}>Add product</button>
+       
+        <Cart products={products} increaseQuantity={this.handleIncreaseQuantity} decreaseQuantity={this.handleDecreaseQuantity} deleteProduct={this.handleDeleteProduct} />
         {loading && <h1>Loading...</h1>}
-        <div style={{fontSize:20, padding:10}}>Total-Amount={this.handleGetTotal()}</div>
+        <div style={{ fontSize: 20, padding: 10 }}>Total-Amount={this.handleGetTotal()}</div>
       </div>
 
-     
+
     );
   }
 }
 
+const styles={
+  button:{
+    margin:10,
+    color:'green'
+  }
+}
 
 
 export default App;
