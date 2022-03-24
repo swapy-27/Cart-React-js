@@ -78,11 +78,13 @@ class App extends React.Component {
   handleDeleteProduct = (product) => {
 
     const products = this.state.products;
-    const items = products.filter((item) => { return item.id !== product.id })
+    
+    // this.setState({
+    //   products: this.products = items
+    // })
 
-    this.setState({
-      products: this.products = items
-    })
+    const docRef = db.collection('product').doc(product.id);
+    docRef.delete();
   }
   handleGetCount = () => {
     let count = 0;
@@ -118,7 +120,7 @@ class App extends React.Component {
               return d;
             }
           )
-          console.log(products)
+          
 
           this.setState(
             {
